@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validador de Ambiente</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      width: 80%;
+      max-width: 800px;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #333333;
+    }
+    p {
+      color: #666666;
+      line-height: 1.6;
+    }
+    .command-box {
+      background-color: #333333;
+      color: #ffffff;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 20px 0;
+      font-family: monospace;
+      position: relative;
+    }
+    .command-box code {
+      color: #00ff00;
+    }
+    .copy-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #007BFF;
+      color: #ffffff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .copy-button:hover {
+      background-color: #0056b3;
+    }
+    .requirements {
+      text-align: left;
+      margin-top: 20px;
+    }
+    .requirements ul {
+      padding-left: 20px;
+    }
+    .footer {
+      margin-top: 20px;
+      color: #666666;
+      font-size: 0.9em;
+    }
+    .logo {
+      width: 300px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    .alert {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #28a745;
+      color: #ffffff;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <img src="https://maximatech.com.br/wp-content/uploads/2019/04/logo-maximatech-e1554815418600-300x76.png" alt="Logo Maximatech" class="logo">
+  <div class="container">
+    <h1>Validador de Ambiente</h1>
+    <p>Bem-vindo ao Validador de Ambiente! Este script ajuda a garantir que seu sistema atenda aos requisitos mínimos necessários para a execução de nossos serviços. Ele verifica memória, CPU, sistema operacional, disco, velocidade de internet e portas abertas.</p>
+    <p>Para executar o validador, use o comando abaixo:</p>
+    <div class="command-box">
+      <code id="command">sudo curl -sL http://go.maximasist.com.br/validador/start.sh | bash</code>
+      <button class="copy-button" onclick="copyCommand()">Copiar</button>
+    </div>
+    <div class="requirements">
+      <h2>Requisitos:</h2>
+      <ul>
+        <li>GLIBC versão 2.35 ou superior</li>
+        <li>Distribuição Ubuntu 22.04 ou superior, ou Debian 12 ou superior</li>
+        <li>Executar o script como root</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer">
+    by Departamento de Tecnologia
+  </div>
+  <div class="alert" id="alert">Comando copiado para a área de transferência!</div>
+  <script>
+    function copyCommand() {
+      const commandText = document.getElementById('command').textContent;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(commandText).then(() => {
+          showAlert('Comando copiado para a área de transferência!');
+        }, (err) => {
+          console.error('Erro ao copiar comando: ', err);
+        });
+      } else {
+        fallbackCopyTextToClipboard(commandText);
+      }
+    }
+
+    function fallbackCopyTextToClipboard(text) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";  // Evita o scroll da página ao focar no textarea
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showAlert('Comando copiado para a área de transferência!');
+      } catch (err) {
+        console.error('Erro ao copiar comando: ', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function showAlert(message) {
+      const alertBox = document.getElementById('alert');
+      alertBox.textContent = message;
+      alertBox.style.display = 'block';
+      setTimeout(() => {
+        alertBox.style.display = 'none';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
